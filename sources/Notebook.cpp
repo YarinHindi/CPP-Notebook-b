@@ -5,22 +5,40 @@
 #include <string>
 using ariel::Notebook;
 using namespace std;
-
+    // this is the constructor of the class which is empty
    Notebook::Notebook(){
 
 };
-    void  Notebook::init_row( int page,  int row)  {
-        try {
-            this->MyNotebook.at(page).at(row);
-        }
-        catch (exception& ex) {
-            char *arr = new char[ROW_LENGHT];
-            for ( int i = 0; i < ROW_LENGHT; ++i) {
-                arr[i] ='_';
+   ///in the destructor i deleted all memory that were allocated to each row i oped in the notebook
+   Notebook::~Notebook(){
+       for (auto const &pageKeys: this->MyNotebook) {
+           for(auto const &rowKeys: pageKeys.second){
+               delete [] rowKeys.second;
+           }
+       }
+   }
+   /// for every row before i write/read/earse i check before if it been already initialize
+    void  Notebook::init_row( int page,  int row) {
+        if (this->MyNotebook.find(page) != this->MyNotebook.end()) {
+            if (this->MyNotebook[page].find(row) == this->MyNotebook[page].end()) {
+                char *arr = new char[ROW_LENGHT];
+                for (int i = 0; i < ROW_LENGHT; ++i) {
+                    arr[i] = '_';
+                }
+                this->MyNotebook[page][row] = arr;
             }
-            this->MyNotebook[page][row] = arr;
+        }
+        if (this->MyNotebook.find(page) == this->MyNotebook.end()) {
+            if (this->MyNotebook[page].find(row) == this->MyNotebook[page].end()) {
+                char *arr = new char[ROW_LENGHT];
+                for (int i = 0; i < ROW_LENGHT; ++i) {
+                    arr[i] = '_';
+                }
+                this->MyNotebook[page][row] = arr;
+            }
         }
     }
+        ///function to check if we already write in this place to know if we need to throw exception
         bool Notebook::check_if_already_written(int page, int row, int columns, ariel::Direction direction, int length) {
 
         if(direction==Direction::Horizontal){
@@ -40,7 +58,7 @@ using namespace std;
         return false;
 
         }
-
+        ///function the check if the string is valid or no
          bool Notebook::check_valid_string(string const &str){
             for (int i = 0; i < str.length(); i++) {
                 unsigned int pos = (unsigned int)(i);
@@ -52,6 +70,7 @@ using namespace std;
             return false;
 
     }
+        ///function that write to the notebook
         void Notebook::write(int page, int row, int columns, ariel::Direction direction, string const &str)  {
         int len = str.length();
         if(columns>ROW_LENGHT || (direction==Direction::Horizontal&&columns+len>ROW_LENGHT)||page<0||row<0||columns<0||str.length()<0||check_valid_string(str)){
@@ -81,7 +100,7 @@ using namespace std;
             }
         }
 
-
+        ///function that read from notebook return string of what we read
          string Notebook::read(int page, int row, int columns, ariel::Direction direction, int len) {
 
 
@@ -107,7 +126,7 @@ using namespace std;
         }
             return ans;
         }
-
+        ///function for erase places in the notebook
         void Notebook::erase(int page, int row, int columns, ariel::Direction direction, int len)  {
             if (columns > ROW_LENGHT || (direction == Direction::Horizontal && columns + len > ROW_LENGHT) ||
                 page < 0 || row < 0 || columns < 0 || len < 0) {
@@ -130,7 +149,7 @@ using namespace std;
                 }
             }
         }
-
+        ///function to show some page in the format first 100 rows.
         string Notebook::show(int p) {
             if (p < 0) {
                 throw std::invalid_argument("Invalid page number");
@@ -153,10 +172,6 @@ using namespace std;
 
         }
         ans+='\n';
-
-            for (auto x: this->MyNotebook) {
-
-            }
             return ans;
 
         }

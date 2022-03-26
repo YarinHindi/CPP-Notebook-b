@@ -3,6 +3,12 @@
 #include <iostream>
 #include <unordered_map>
 
+
+/*/
+ * this hpp file represent the methods that notebook should have and the attributes
+ */
+
+
 using namespace std;
 namespace ariel {
     // Defines a direction of a message on the board
@@ -11,6 +17,7 @@ namespace ariel {
          static constexpr int  ROW_LENGHT = 100;
          unordered_map<int ,unordered_map<int,char*>> MyNotebook;
          Notebook();
+         ~Notebook();
          void write( int page, int row, int columns,Direction direction,string  const & str) ;
          string read( int page, int row, int columns,Direction direction, int len) ;
          void erase( int page, int row, int columns,Direction direction, int len) ;
