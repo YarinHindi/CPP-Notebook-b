@@ -72,8 +72,9 @@ using namespace std;
     }
         ///function that write to the notebook
         void Notebook::write(int page, int row, int columns, ariel::Direction direction, string const &str)  {
-        int len = str.length();
-        if(columns>ROW_LENGHT || (direction==Direction::Horizontal&&columns+len>ROW_LENGHT)||page<0||row<0||columns<0||str.length()<0||check_valid_string(str)){
+
+       int len = str.length();
+        if(columns>=ROW_LENGHT || (direction==Direction::Horizontal&&columns+len>ROW_LENGHT)||page<0||row<0||columns<0||str.length()<0||check_valid_string(str)){
             throw std::invalid_argument("you cant write in more than  written");
 
         }
@@ -104,7 +105,7 @@ using namespace std;
          string Notebook::read(int page, int row, int columns, ariel::Direction direction, int len) {
 
 
-        if(columns>ROW_LENGHT || (direction==Direction::Horizontal&&columns+len>ROW_LENGHT)||page<0||row<0||columns<0||len<0){
+        if(columns>=ROW_LENGHT || (direction==Direction::Horizontal&&columns+len>ROW_LENGHT)||page<0||row<0||columns<0||len<0){
             throw std::invalid_argument("Invalid read");
         }
         if(direction==Direction::Horizontal){
@@ -128,8 +129,7 @@ using namespace std;
         }
         ///function for erase places in the notebook
         void Notebook::erase(int page, int row, int columns, ariel::Direction direction, int len)  {
-            if (columns > ROW_LENGHT || (direction == Direction::Horizontal && columns + len > ROW_LENGHT) ||
-                page < 0 || row < 0 || columns < 0 || len < 0) {
+            if (columns >= ROW_LENGHT || (direction == Direction::Horizontal && columns + len > ROW_LENGHT) ||page < 0 || row < 0 || columns < 0 || len < 0) {
                 throw std::invalid_argument("Invalid erase");
             }
             if (direction == Direction::Horizontal) {
@@ -151,6 +151,7 @@ using namespace std;
         }
         ///function to show some page in the format first 100 rows.
         string Notebook::show(int p) {
+
             if (p < 0) {
                 throw std::invalid_argument("Invalid page number");
             }
